@@ -1,22 +1,48 @@
 package com.transcomics.transcomics.model.wrapper;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.SneakyThrows;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Le-Hong-Quan
  * Date: 29/05/2024
  * Time: 13:07
  */
-public class WrapResponse {
-    //CONST=============================================================================================================
+@Getter
+@Setter
+public class WrapResponse<T> {
+    private boolean success;
+    private T data;
+    private List<String> message;
 
-    //VARIABLE==========================================================================================================
 
-    //GET-SET===========================================================================================================
+    public static <T> WrapResponse<T> error(String msg) {
+        WrapResponse baseResponse = new WrapResponse();
+        baseResponse.setData(null);
+        baseResponse.setSuccess(false);
+        baseResponse.setMessage(Collections.singletonList(msg));
+        return baseResponse;
+    }
 
-    //FUNCTION==========================================================================================================
+    public static <T> WrapResponse<T> ok(T data) {
+        WrapResponse baseResponse = new WrapResponse();
+        baseResponse.setData(data);
+        baseResponse.setSuccess(true);
+        return baseResponse;
+    }
 
-    //VALIDATE==========================================================================================================
+    public static <T> CompletableFuture<WrapResponse<T>> okFuture(CompletableFuture<T> data) {
+        return data.thenApply(rs -> WrapResponse.ok(rs));
+    }
 
-    //EVENT-LISTENER====================================================================================================
-
-    //OTHER=============================================================================================================
+    @SneakyThrows
+    public static <T> Class<? extends WrapResponse> getClass(Class<T> clazz) {
+        return WrapResponse.ok(clazz.newInstance()).getClass();
+    }
 }
+

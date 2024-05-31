@@ -1,0 +1,53 @@
+spring:
+  application:
+    name: TransComics
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    database: postgresql
+  flyway:
+    locations: classpath:db/migration
+    baseline-version: 0
+    baseline-on-migrate: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/transcomics
+    username: postgres
+    password: postgres
+server:
+  servlet:
+    context-path: /trans-comics
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: "health,info,openapi,swagger-ui"
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+token:
+  signing:
+    key: 5E6mieLD8Ce3MH7G3vc745KqQEfpj7nF0Oo7Jyw3W4W9i48ulj
+  expiration: 3600000
+  refreshExpiration: 86400000
+logging:
+  level:
+    org.springframework.security.web: DEBUG
+
+
+
+
