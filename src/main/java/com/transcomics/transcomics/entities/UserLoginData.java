@@ -47,6 +47,4 @@ public class UserLoginData {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserAccount userAccount;
-
-
 }
